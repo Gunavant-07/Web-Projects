@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        if ("Notification" in window && Notification.permission !== "granted" && Notification.permission !== "denied") {
+            Notification.requestPermission();
+        }
+    </script>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="user-profile">
+            <img src="{{ current_user.profile_pic or url_for('static', filename='images/user.png')  }}" alt="User Avatar" id="profile-pic" class="profile-pic">
+            <span>{{ current_user.username }}</span>
+        </div>
+        <div class="menu-item" id="my-day">
+            <i class="fas fa-sun"></i> My Day
+        </div>
+        <div class="menu-item" id="important">
+            <i class="fas fa-star"></i> Important
+        </div>
+        <div class="menu-item" id="planned">
+            <i class="fas fa-calendar-alt"></i> Planned
+        </div>
+        <div class="menu-item" id="tasks">
+            <i class="fas fa-tasks"></i> Customize Tasks
+        </div>
+        <div class="new-list-btn" onclick="showNewListInput()">
+            <i class="fas fa-plus"></i> New Task
+        </div>
+        <div id="new-list-input-container">
+            <input type="text" id="new-list-input" placeholder="Enter Task Name">
+            <button id="create-list-btn" onclick="createCustomList()">Create</button>
+        </div>
+        <div class="custom-tasks-container">
+            <div class="scrollable-content">
+                <div id="custom-lists"></div>
+            </div>
+        </div>
+        <div class="logout-container">
+            <a href="{{ url_for('logout') }}" class="logout-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="header">
+            <h1>Welcome back, {{ current_user.username }} 👋</h1>
+            <div class="date">{{ current_date }}</div>
+        </div>
+        <div class="task-input-container">
+            <input type="text" id="task-input" placeholder="Add a task...">
+            <input type="date" id="due-date-input">
+            <button id="add-task-btn">Add Task</button>
+        </div>
+        <div class="main-content">
+            <div class="todo-section">
+                <h3>To-Do <i class="fas fa-plus" onclick="document.getElementById('task-input').focus()"></i></h3>
+                <div class="task-list">
+                    <div id="task-list"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dialog for Profile Picture Upload -->
+    <dialog id="profile-pic-dialog" class="profile-pic-dialog">
+        <div class="dialog-content">
+            <h3>Update Profile Picture</h3>
+            <div class="preview-container">
+                <img id="preview-image" src="{{ current_user.profile_pic or 'https://via.placeholder.com/40' }}" alt="Preview" class="preview-image">
+            </div>
+            <input type="file" id="profile-pic-input" accept="image/*">
+            <button id="upload-btn" onclick="uploadProfilePic()">Upload</button>
+            <button id="cancel-btn" onclick="closeProfilePicDialog()">Cancel</button>
+        </div>
+    </dialog>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

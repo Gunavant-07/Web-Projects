@@ -1,0 +1,66 @@
+conn = sqlite3.connect("database.db")
+cursor = conn.cursor()
+
+# Create table
+
+CREATE TABLE users (
+    UserID INT AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(100) NOT NULL,
+    Email VARCHAR(100) NOT NULL UNIQUE,
+    Password VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE categories (
+    CategoryID INT AUTO_INCREMENT PRIMARY KEY,
+    CategoryName VARCHAR(100) NOT NULL,
+    UserID INT NOT NULL,
+    FOREIGN KEY (UserID) REFERENCES users(UserID) ON DELETE CASCADE
+);
+
+CREATE TABLE tasks (
+    TaskID INT AUTO_INCREMENT PRIMARY KEY,
+    Title VARCHAR(255) NOT NULL,
+    Description TEXT,
+    DueDate DATE,
+    Priority ENUM('Low', 'Medium', 'High') DEFAULT 'Medium',
+    Status ENUM('Pending', 'In Progress', 'Completed') DEFAULT 'Pending',
+    UserID INT NOT NULL,
+    FOREIGN KEY (UserID) REFERENCES users(UserID) ON DELETE CASCADE
+);
+
+CREATE TABLE task_category (
+    TaskID INT NOT NULL,
+    CategoryID INT NOT NULL,
+    PRIMARY KEY (TaskID, CategoryID),
+    FOREIGN KEY (TaskID) REFERENCES tasks(TaskID) ON DELETE CASCADE,
+    FOREIGN KEY (CategoryID) REFERENCES categories(CategoryID) ON DELETE CASCADE
+);
+
+
+CREATE DATABASE task_manager;
+USE task_manager;
+
+-- Create the users table for authentication
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL
+);
+
+-- Create the tasks table for storing tasks
+CREATE TABLE tasks (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    category VARCHAR(50) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+-- Create the custom_lists table for storing user-created lists
+CREATE TABLE custom_lists (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    list_name VARCHAR(50) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);

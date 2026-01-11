@@ -1,0 +1,586 @@
+/* Reset styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+/* Body - Flex layout */
+body {
+    display: flex;
+    height: 100vh;
+    background: #f5f7fa; /* Light gray background */
+    color: #333; /* Dark text for contrast */
+    overflow: hidden; /* Prevent body overflow */
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background: #ff4d4d; /* Red sidebar as in the image */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* Reduced gap for tighter layout */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    color: white;
+    position: relative;
+    min-height: 0; /* Allow flex child to shrink */
+    height: 100vh; /* Full viewport height */
+    overflow: hidden; /* Prevent sidebar overflow */
+}
+
+.profile-pic-dialog {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    padding: 20px;
+    background: white;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    display: none; /* Hidden by default, shown via JavaScript */
+}
+
+.profile-pic-dialog[open] {
+    display: block; /* Show when the dialog is opened */
+}
+
+.dialog-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.dialog-content h3 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.preview-container {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #ff4d4d; /* Match the app's red theme */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f9f9f9; /* Light background for placeholder */
+}
+
+.preview-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#profile-pic-input {
+    margin: 10px 0;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+#upload-btn, #cancel-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s;
+}
+
+#upload-btn {
+    background: #ff4d4d;
+    color: white;
+}
+
+#upload-btn:hover {
+    background: #e04343;
+}
+
+#cancel-btn {
+    background: #ddd;
+    color: #333;
+    margin-left: 10px;
+}
+
+#cancel-btn:hover {
+    background: #ccc;
+}
+
+/* Overlay for dialog (to dim the background) */
+.dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: none;
+}
+
+.dialog-overlay[open] {
+    display: block;
+}
+
+/* User Profile */
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.user-profile img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+.user-profile span {
+    font-size: 16px;
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+/* Menu Items (Default and Custom Categories) */
+.menu-item {
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Ensure consistent gap between icon and text */
+    background: rgba(255, 255, 255, 0.1);
+    margin-bottom: 2px;
+  
+    position: relative; /* For remove icon positioning */
+}
+
+.menu-item i {
+    font-size: 18px;
+    margin-right: 8px; /* Consistent spacing after icon */
+}
+
+/* Custom Menu Items (for removable lists) */
+.custom-menu-item {
+    composes: menu-item;
+    padding: 10px 25px; /* Increased horizontal padding for more space */
+}
+
+.custom-menu-item .remove-list {
+    position: absolute;
+    right: 10px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+    opacity: 0; /* Hidden by default */
+    transition: opacity 0.3s;
+}
+
+.custom-menu-item:hover .remove-list {
+    opacity: 1; /* Show on hover */
+}
+
+.menu-item:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.menu-item.selected {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Bordered Tasks Option */
+#tasks {
+    border: 2px solid #fff; /* White border to distinguish Tasks */
+    border-radius: 5px;
+}
+
+/* Specific adjustment for Important icon */
+#important i {
+    margin-left: 0; /* Remove extra space in front of the star icon */
+    margin-right: 8px; /* Match the gap with other icons */
+}
+
+/* New List Button */
+.new-list-btn {
+    display: flex;
+    align-items: center;
+    padding: 10px 25px; /* Increased horizontal padding to match custom lists */
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.3s;
+    flex-shrink: 0; /* Prevent the button from shrinking */
+    margin: 5px 0; /* Space above and below */
+}
+
+.new-list-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.new-list-btn i {
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+/* Custom Tasks Container */
+.custom-tasks-container {
+    background: rgba(255, 255, 255, 0.15); /* Light highlighted background */
+    border-radius: 5px;
+    padding: 5px 0; /* Internal padding for the container */
+    display: flex;
+    flex-direction: column;
+    gap: 2px; /* Tight spacing between elements */
+    flex-grow: 1; /* Allow it to grow and take available space */
+    margin-bottom: 10px; /* Space above Logout */
+    overflow: hidden; /* Prevent container overflow */
+}
+
+/* Scrollable Content */
+.scrollable-content {
+    flex: 1 1 auto; /* Allow it to grow and shrink */
+    overflow-y: auto; /* Enable vertical scrolling */
+    max-height: calc(100vh - 260px); /* Adjusted for user profile, default items, New List, Logout */
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* Space between custom lists */
+    padding-bottom: 10px; /* Ensure space at the bottom */
+}
+
+/* Logout Container */
+.logout-container {
+    margin-top: auto; /* Push to the bottom of the sidebar */
+    padding: 10px 0; /* Vertical padding for consistency */
+    flex-shrink: 0; /* Prevent shrinking */
+    position: sticky; /* Keep it fixed at the bottom */
+    bottom: 20px; /* Offset from the very bottom to account for padding */
+    background: #ff4d4d; /* Match sidebar background */
+    z-index: 1; /* Ensure it stays above scrollable content */
+    width: 100%; /* Full width of sidebar */
+}
+
+.logout-link {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 15px; /* Horizontal padding for space */
+}
+
+.logout-link i {
+    font-size: 18px;
+}
+
+.logout-link:hover {
+    text-decoration: underline;
+}
+
+/* Main container */
+.container {
+    flex: 1;
+    padding: 20px;
+    background: #f5f7fa;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden; /* Prevent overflow */
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-shrink: 0; /* Prevent header from shrinking */
+}
+
+.header h1 {
+    font-size: 24px;
+    color: #333;
+}
+
+.header .date {
+    font-size: 16px;
+    color: #666;
+}
+
+.header .actions {
+    display: flex;
+    gap: 10px;
+}
+
+.header .actions i {
+    font-size: 20px;
+    color: #ff4d4d;
+    cursor: pointer;
+}
+
+/* Task Input */
+.task-input-container {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    flex-shrink: 0; /* Prevent input container from shrinking */
+}
+
+#task-input, #due-date-input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    background: white;
+    color: #333;
+}
+
+#due-date-input {
+    flex: 0 0 150px;
+}
+
+button {
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background: #e04343;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1; /* Take up remaining height */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Prevent overflow */
+}
+
+/* To-Do Section */
+.todo-section {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    flex: 1; /* Fill remaining height */
+    display: flex;
+    flex-direction: column;
+    width: 100%; /* Full width */
+}
+
+.todo-section h3 {
+    font-size: 18px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0; /* Prevent header from shrinking */
+}
+
+.todo-section h3 i {
+    color: #ff4d4d;
+    cursor: pointer;
+}
+
+.task-list {
+    flex: 1; /* Take up remaining height within todo-section */
+    overflow-y: auto; /* Enable vertical scrolling */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.task-item {
+    display: flex;
+    align-items: center;
+    background: #f9f9f9;
+    padding: 10px;
+    border-radius: 5px;
+    gap: 10px;
+    cursor: move;
+}
+
+.task-item:hover {
+    background: #f0f0f0;
+}
+
+.task-checkbox {
+    margin-right: 10px;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+}
+
+.task-text {
+    flex: 1;
+}
+
+.completed .task-text {
+    text-decoration: line-through;
+    color: #888;
+}
+
+.due-date {
+    font-size: 12px;
+    color: #666;
+    margin-left: 10px;
+}
+
+.task-checkbox:checked {
+    background-color: #28a745;
+    border: none;
+}
+
+.fa-star {
+    color: #ffd700;
+    margin-left: 10px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.fa-star.unimportant {
+    color: #ccc;
+}
+
+.delete-task {
+    color: #ff4d4d;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+/* Completed Tasks */
+.completed-tasks {
+    margin-top: 20px;
+}
+
+.completed-tasks h4 {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.completed-tasks ul {
+    list-style: none;
+}
+
+.completed-tasks li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.completed-tasks li i {
+    color: #28a745;
+}
+
+/* Login and Register Pages */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #f5f7fa;
+}
+
+.auth-box {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    text-align: center;
+}
+
+.auth-box h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.auth-box input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.auth-box button {
+    width: 100%;
+    padding: 10px;
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.auth-box button:hover {
+    background: #e04343;
+}
+
+.auth-box .message {
+    margin-top: 10px;
+    color: #ff4d4d;
+}
+
+/* New List Input */
+#new-list-input-container {
+    margin-top: 5px;
+    display: none;
+}
+
+#new-list-input {
+    width: 80%;
+    padding: 5px;
+    border: none;
+    border-radius: 3px;
+    background: white;
+    color: #333;
+}
+
+#create-list-btn {
+    padding: 10px 10px;
+    background:#f98d8d;
+    transition: background 0.3s;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
